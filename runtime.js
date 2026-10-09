@@ -6,6 +6,7 @@ import {GameTime,Timeline,formatTime,withLoading} from './systems/time.js';
 import {validateChapter} from './systems/quests.js';
 import {MovementController} from './systems/movement.js';
 import {InteractionRegistry} from './systems/interactions.js';
+import {JumpController} from './systems/jump.js';
 import {CameraRig} from './systems/camera.js';
 
 const $=id=>document.getElementById(id);
@@ -24,27 +25,32 @@ const visualProfile='improved';
 const view=createImprovedWorld(canvas);
 const {renderer,scene,camera,world,avatar,avatarShadow,carryAnchor,playerView,crates,crateShadows,waypoint,goalBeam,waypointMaterial,dust,trees,sun,bulb,glass,lampLight,cutawayBack,cutawayLeft,add}=view;
 const movement=new MovementController(avatar,(x,z)=>flow.canWalk(x,z));
+const jump=new JumpController();let jumpOffset=0;
 let started=false,finished=false,gameOpen=false,completing=false,warmth=0;
 let elapsed=0,walkTime=0,lastStep=0,lampTime=0,gamePos=0,cooldown=0,nearest=null;
 let currentYaw=.66,currentDistance=23.8,currentPitch=.7,lastFrame=performance.now();
 let sequenceConfig=null,savedCamera=null,sequencePromiseResolve=null;
 const camTarget=new THREE.Vector3(0,1.15,.6),lookTarget=new THREE.Vector3(),labelV=new THREE.Vector3();
 const keys=new Set(),touch={x:0,z:0};let stickId=null,drag=null,touchRun=false,runPointerId=null;
-let coarse=matchMedia('(pointer:coarse)').matches||innerWidth<=800;
+let coarse=matchMedia('(any-pointer:coarse)').matches||innerWidth<=900;
 const audio=createAudio(()=>gameTime.paused,()=>started);
 const {tone,chime}=audio;
 let labels=[],toastUntil=0;
 const markerGroup=new THREE.Group();world.add(markerGroup);
 const marker=add(new THREE.OctahedronGeometry(.115),new THREE.MeshBasicMaterial({color:0xf2d798}),0,0,0,markerGroup);marker.castShadow=false;
 
-function syncRunButton(){$('runBtn').dataset.held=String(touchRun);$('runBtn').textContent=touchRun?'달리는 중':'누르고 달리기';}
+function syncRunButton(){$('runBtn').dataset.held=String(touchRun);$('runBtn').textContent='달리기';}
 function clearInput(){keys.clear();touch.x=touch.z=0;stickId=null;drag=null;touchRun=false;runPointerId=null;syncRunButton();movement.stop();$('stick').style.transform='translate(0,0)';}
 function movementLocked(){return !started||!gameTime.started||finished||gameTime.paused||gameOpen||completing&&!timeline.active||timeline.active&&(timeline.step.lockMovement??sequenceConfig.lockMovement);}
 function interactionLocked(){return movementLocked()||timeline.active||completing;}
 function cameraLocked(){return gameTime.paused||timeline.active||gameOpen||finished;}
 function syncControls(){
- $('touchControls').hidden=!coarse||movementLocked();$('interactBtn').hidden=timeline.active||finished;
- $('runBtn').hidden=!coarse||movementLocked();$('runBtn').disabled=movementLocked();
+ document.body.dataset.mobile=String(coarse);document.body.dataset.dialogue=String(timeline.active);
+ $('touchControls').hidden=!coarse||!started||finished;
+ $('joystick').setAttribute('aria-disabled',String(movementLocked()));
+ $('interactBtn').hidden=coarse?false:timeline.active||finished;
+ $('runBtn').hidden=!coarse;$('runBtn').disabled=movementLocked();
+ $('jumpBtn').hidden=!coarse;$('jumpBtn').disabled=movementLocked()||jump.airborne;
  $('hint').hidden=timeline.active||finished;
  $('cameraPreset').disabled=cameraLocked();
  for(const id of ['rotateLeft','rotateRight','resetCamera'])$(id).disabled=cameraLocked()||!rig.acceptsInput;
@@ -88,7 +94,7 @@ function resume(reason){gameTime.resume(reason);lastFrame=performance.now();clea
 function manualPause(){if(!started||finished)return;pause('manual');$('pauseMessage').textContent='게임과 기록, 대사·연출 시간이 멈췄습니다.';$('pauseOverlay').hidden=false;}
 function continueGame(){if(document.hidden||gameTime.reasons.has('loading')||gameTime.reasons.has('context'))return;resume('background');resume('manual');$('pauseOverlay').hidden=true;canvas.focus();}
 function resetCrates(){BOXES.forEach(b=>{const g=crates[b.id];world.add(g);g.position.set(b.x,.39,b.z);g.scale.setScalar(1);g.rotation.set(0,0,0);crateShadows[b.id].visible=true});}
-function resetWorld(){clearInput();avatar.position.set(chapter.spawn.x,.11,chapter.spawn.z);avatar.rotation.y=0;movement.direction=0;warmth=0;walkTime=elapsed=lastStep=lampTime=gamePos=cooldown=0;
+function resetWorld(){clearInput();jump.reset();jumpOffset=0;avatar.position.set(chapter.spawn.x,.11,chapter.spawn.z);avatar.rotation.y=0;movement.direction=0;warmth=0;walkTime=elapsed=lastStep=lampTime=gamePos=cooldown=0;
  resetCrates();
  rig.select('free');$('cameraPreset').value='free';makeLabels();updateHUD();
 }
@@ -148,10 +154,13 @@ window.addEventListener('keydown',e=>{
  if(gameOpen){if(['Space','Enter','KeyE'].includes(e.code))catchSpark();return;}
  if(['KeyE','Enter'].includes(e.code)&&!interactionLocked())safe(interact)();
  if(!cameraLocked()){if(e.code==='KeyQ')rig.rotate(-Math.PI/5);if(e.code==='KeyR')rig.rotate(Math.PI/5);}
+ if(e.code==='Space'&&!movementLocked())jump.start();
  if(!movementLocked())keys.add(e.code);
 });
 window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',clearInput);
-$('runBtn').addEventListener('pointerdown',e=>{e.stopPropagation();if(movementLocked()||runPointerId!==null)return;runPointerId=e.pointerId;touchRun=true;$('runBtn').setPointerCapture(e.pointerId);syncRunButton();e.preventDefault();});
+$('jumpBtn').addEventListener('click',e=>{e.stopPropagation();jump.start(movementLocked());});
+ $('jumpBtn').addEventListener('pointerdown',e=>{e.stopPropagation();});
+ $('runBtn').addEventListener('pointerdown',e=>{e.stopPropagation();if(movementLocked()||runPointerId!==null)return;runPointerId=e.pointerId;touchRun=true;$('runBtn').setPointerCapture(e.pointerId);syncRunButton();e.preventDefault();});
 for(const eventName of ['pointerup','pointercancel','lostpointercapture'])$('runBtn').addEventListener(eventName,e=>{if(e.pointerId!==runPointerId)return;runPointerId=null;touchRun=false;syncRunButton();});
 document.addEventListener('visibilitychange',()=>{clearInput();if(document.hidden){pause('background');if(started&&!finished){$('pauseMessage').textContent='다른 탭으로 이동해 일시정지했습니다. 기록에 중단 이력이 저장됩니다.';$('pauseOverlay').hidden=false;}}
  else if(!started||finished){resume('background');}else{updateTimer();}});
@@ -160,11 +169,19 @@ canvas.addEventListener('pointerdown',e=>{if(cameraLocked()||!rig.acceptsInput||
 canvas.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id||cameraLocked())return;rig.rotate(-(e.clientX-drag.x)*.007,(e.clientY-drag.y)*.004);drag.x=e.clientX;drag.y=e.clientY;});
 for(const name of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(name,e=>{if(e.pointerId===drag?.id)drag=null});
 canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();if(!cameraLocked())rig.zoom(e.deltaY*.012)},{passive:false});
-function moveStick(e){const r=$('joystick').getBoundingClientRect();let x=(e.clientX-r.left-r.width/2)/38,z=(e.clientY-r.top-r.height/2)/38;const len=Math.hypot(x,z);if(len>1){x/=len;z/=len;}touch.x=x;touch.z=z;$('stick').style.transform=`translate(${x*31}px,${z*31}px)`;}
+function moveStick(e){const r=$('joystick').getBoundingClientRect();let x=(e.clientX-r.left-r.width/2)/(r.width*.35),z=(e.clientY-r.top-r.height/2)/(r.height*.35);const len=Math.hypot(x,z);if(len>1){x/=len;z/=len;}touch.x=x;touch.z=z;$('stick').style.transform=`translate(${x*r.width*.29}px,${z*r.height*.29}px)`;}
 $('joystick').addEventListener('pointerdown',e=>{if(movementLocked()||stickId!==null)return;e.stopPropagation();stickId=e.pointerId;$('joystick').setPointerCapture(e.pointerId);moveStick(e);e.preventDefault()});
 $('joystick').addEventListener('pointermove',e=>{if(e.pointerId===stickId&&!movementLocked())moveStick(e)});
 for(const name of ['pointerup','pointercancel','lostpointercapture'])$('joystick').addEventListener(name,e=>{if(e.pointerId===stickId){stickId=null;touch.x=touch.z=0;$('stick').style.transform='translate(0,0)';}});
-function resize(){coarse=matchMedia('(pointer:coarse)').matches||innerWidth<=800;syncControls();renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()}
+function syncInputHelp(){
+ $('hint').innerHTML=coarse?'빛나는 표시 가까이에서 행동 버튼을 누르세요.':'빛나는 표시 가까이에서 <kbd>E</kbd> 를 누르세요.';
+ $('controls').innerHTML=coarse?'조이스틱으로 이동 · 행동 버튼으로 상호작용 · 점프 버튼으로 점프 · 달리기 버튼을 누른 채 이동':'<span><kbd>W A S D</kbd> 이동 · <kbd>Shift</kbd> 달리기 · <kbd>Space</kbd> 점프</span><i></i><span><kbd>E</kbd> 상호작용</span><i></i><span>드래그 시점 회전 · 휠 확대</span>';
+ const rows=coarse?[['이동','왼쪽 조이스틱'],['행동','대상 가까이에서 행동 버튼'],['점프','점프 버튼 · 착지 후 다시 점프'],['달리기','달리기 버튼을 누른 채 이동'],['시점','빈 화면을 밀어 회전 · 카메라 프리셋'],['대사·연출','자동 진행 · 스킵 불가'],['일시정지','왼쪽 위 버튼 · 복귀 후 직접 재개']]:[['이동','WASD / 방향키'],['달리기','Shift를 누른 채 이동'],['점프','Space · 착지 후 다시 점프'],['상호작용','E / 화면 오른쪽 아래 버튼'],['시점 회전','화면 드래그 / Q · R / 회전 버튼'],['가까이 보기','마우스 휠 · 시점 초기화 ◎'],['대사·연출','자동 진행 · 스킵 불가'],['일시정지','P / ESC / 왼쪽 위 버튼']];
+ $('controlHelp').innerHTML=rows.map(([a,b])=>'<dt>'+a+'</dt><dd>'+b+'</dd>').join('');
+ $('scene').setAttribute('aria-label',coarse?'조이스틱 이동, 행동 버튼 상호작용, 점프 버튼 점프, 달리기 버튼 홀드, 빈 화면 드래그 시점 회전':'방향키 또는 WASD 이동, E 상호작용, Space 점프, Shift 달리기, Q와 R 카메라 회전');
+ $('lampInstruction').innerHTML=coarse?'움직이는 불씨가 밝은 구간에 닿으면<br>불씨 잡기 버튼을 누르세요.':'움직이는 불씨가 밝은 구간에 닿으면<br><strong>SPACE</strong> 또는 아래 버튼을 누르세요.';
+}
+function resize(){coarse=matchMedia('(any-pointer:coarse)').matches||innerWidth<=900;syncControls();syncInputHelp();renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()}
 window.addEventListener('resize',resize);resize();
 function animate(now){requestAnimationFrame(animate);const frameSeconds=Math.max(0,(now-lastFrame)/1000);lastFrame=now;
  const dt=gameTime.paused?0:Math.min(frameSeconds,.05);elapsed+=dt;timeline.tick();updateTimer();
@@ -175,7 +192,8 @@ function animate(now){requestAnimationFrame(animate);const frameSeconds=Math.max
  const moving=movement.update(dt,{x:(keys.has('KeyD')||keys.has('ArrowRight')?1:0)-(keys.has('KeyA')||keys.has('ArrowLeft')?1:0)+touch.x,z:(keys.has('KeyS')||keys.has('ArrowDown')?1:0)-(keys.has('KeyW')||keys.has('ArrowUp')?1:0)+touch.z},currentYaw,targetSpeed,movementLocked());
  if(!interactionLocked()&&flow.phase==='exit'){const target=candidates()[0];if(target&&Math.hypot(avatar.position.x-target.x,avatar.position.z-target.z)<.58){flow.finish(target.id);completeQuest().catch(fail);}}
  walkTime+=moving?dt*9:0;playerView.update({dt,speed:dt>0?Math.hypot(avatar.position.x-previousX,avatar.position.z-previousZ)/dt:0,moving,gait:moving?Math.sin(walkTime):0,elapsed,carrying:flow.carry!==null});
- view.updatePlayerHeight(dt);
+ avatar.position.y-=jumpOffset;view.updatePlayerHeight(dt);jumpOffset=jump.update(dt);avatar.position.y+=jumpOffset;
+ $('jumpBtn').disabled=movementLocked()||jump.airborne;
  if(moving&&elapsed-lastStep>.28){lastStep=elapsed;tone(125,.006,.045,'triangle');}chooseNearest();
  let desiredDistance=rig.distance,desiredYaw=rig.yaw;const portrait=innerWidth/innerHeight<.8;
  if(rig.target){lookTarget.set(rig.target.x,rig.target.y,rig.target.z);if(portrait)desiredDistance*=1.18;}
@@ -196,6 +214,6 @@ lastFrame=performance.now();requestAnimationFrame(animate);
 $('startBtn').disabled=false;$('startLabel').textContent='이야기 속으로';
 if(document.hidden)pause('background');
 // Read-only diagnostics. No teleport, skip, or state mutation API is exposed.
-window.gameStatus=()=>({visualProfile,runRequested:touchRun||keys.has('ShiftLeft')||keys.has('ShiftRight'),graphics:{render:{...renderer.info.render},memory:{...renderer.info.memory},dpr:renderer.getPixelRatio()},model:playerView.adapter.snapshot?.(),phase:flow.phase,questId:flow.quest?.id,chapterId:chapter.id,chapterIndex,carrying:flow.carry,placed:flow.placed.size,sparks:flow.sparks,started,finished,completing,dialogue:timeline.active,lineIndex:timeline.index,remainingMs:timeline.remainingMs,movementLocked:movementLocked(),position:{x:avatar.position.x,z:avatar.position.z,yaw:avatar.rotation.y},camera:{...rig.snapshot(),currentYaw},gamePos,cooldown,gameOpen,nearest:nearest?.id,rendered:renderer.info.render.calls>0,timer:gameTime.snapshot()});
+window.gameStatus=()=>({visualProfile,jump:jump.snapshot(),mobileUI:coarse,runRequested:touchRun||keys.has('ShiftLeft')||keys.has('ShiftRight'),graphics:{render:{...renderer.info.render},memory:{...renderer.info.memory},dpr:renderer.getPixelRatio()},model:playerView.adapter.snapshot?.(),phase:flow.phase,questId:flow.quest?.id,chapterId:chapter.id,chapterIndex,carrying:flow.carry,placed:flow.placed.size,sparks:flow.sparks,started,finished,completing,dialogue:timeline.active,lineIndex:timeline.index,remainingMs:timeline.remainingMs,movementLocked:movementLocked(),position:{x:avatar.position.x,z:avatar.position.z,yaw:avatar.rotation.y},camera:{...rig.snapshot(),currentYaw},gamePos,cooldown,gameOpen,nearest:nearest?.id,rendered:renderer.info.render.calls>0,timer:gameTime.snapshot()});
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();pause('context');$('loadError').hidden=false;$('errorMessage').textContent='3D 화면 연결이 끊겼습니다. 기록과 진행을 멈췄습니다. 다시 불러오기를 눌러주세요.';});
 

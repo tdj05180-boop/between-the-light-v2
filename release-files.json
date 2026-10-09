@@ -5,13 +5,18 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 8893,
-      "sha256": "f8441ed94fe1f6ea483ff3a88ccec6027cca6977ba7dec2d8bb27fe4060f40b6"
+      "bytes": 8434,
+      "sha256": "174b5cae086e5f23e861f0ae048e9351c7675cf533e0c9b7fc5bf2e7c839aab0"
     },
     {
       "path": "style.css",
-      "bytes": 16239,
-      "sha256": "f3be1880bee1e238297d1b0b6f4cdbd6eb0a04b5c686a6771a416d97af4dee93"
+      "bytes": 14607,
+      "sha256": "899d68e91a6c234e52d00c1f1d60dd734ff324fbc5efa6cb39431a5e2de793d3"
+    },
+    {
+      "path": "mobile-controls.css",
+      "bytes": 5211,
+      "sha256": "1e3d5281a25a2a49911c9f820dc1ac40708c3b680b7c5537ecce0404bb3d0f81"
     },
     {
       "path": "game.js",
@@ -20,8 +25,8 @@
     },
     {
       "path": "runtime.js",
-      "bytes": 22432,
-      "sha256": "2797f3a4aa0cb2b008f48c01e9bb9573965fd3201ea24f9cdce22f29145e6234"
+      "bytes": 25217,
+      "sha256": "03dea7f9f1f5a3863f525e845b7fa408eb44486ed15386b97da82cdeefcfac4e"
     },
     {
       "path": "audio.js",
@@ -55,13 +60,28 @@
     },
     {
       "path": "models/improved-world.js",
-      "bytes": 7833,
-      "sha256": "c54464887e01e66cd2f95ab611fe2d0d24b417a58cf768e25717065d3cbf031f"
+      "bytes": 7836,
+      "sha256": "1e86730bcca55356df643847eee07eb8cda8f4dd7c5d0a51a1461e7648bab58c"
     },
     {
-      "path": "models/improved-avatar.js",
-      "bytes": 5532,
-      "sha256": "7062dca31a80c7139036b720edacb7f1172dc17e539be680efe3200db9f5b989"
+      "path": "models/candidate-avatar.js",
+      "bytes": 1491,
+      "sha256": "d1adba2539f236fef3fac4d0781aa18eaa1b68dade5d04c398e5520ad42f5ada"
+    },
+    {
+      "path": "models/pelvis-refined-avatar.js",
+      "bytes": 6489,
+      "sha256": "0cf83d32b79db1c4d180bb4772ecdec4563369a1b0589815d954bd572908bef7"
+    },
+    {
+      "path": "models/tailored-avatar.js",
+      "bytes": 13842,
+      "sha256": "9388917971ff6ddea9d72418be0e723d594a482a55deea9df83fef63eed49b4c"
+    },
+    {
+      "path": "models/tailored-mesh.js",
+      "bytes": 3922,
+      "sha256": "dcd5db9492933da3f1c285db3da766231a656c6642e85c5b3ec1c2e844f7f269"
     },
     {
       "path": "models/pastel-shapes.js",
@@ -107,6 +127,11 @@
       "path": "systems/interactions.js",
       "bytes": 599,
       "sha256": "ac5dae82ab47c533e1a91094fe2ac47888927e36af5eefdd29eb0fe5b37aae0b"
+    },
+    {
+      "path": "systems/jump.js",
+      "bytes": 566,
+      "sha256": "a745908e19c8f36f45ff748258a269d8bcc8b8cb2f6c545895b1b0c3eccee38c"
     },
     {
       "path": "systems/model-slot.js",

@@ -1,6 +1,6 @@
 import * as T from '../vendor/three.module.min.js';
 import {createLegacyWorld} from './legacy-world.js';
-import {createImprovedAvatar} from './improved-avatar.js';
+import {createCandidateAvatar} from './candidate-avatar.js';
 import {bevelBox,material,mesh,modelMetrics} from './pastel-shapes.js';
 import {batchStatic} from './static-batch.js';
 
@@ -59,7 +59,7 @@ export function createImprovedWorld(canvas){
   mesh(parent,new T.PlaneGeometry(.19,.10),material(0xffffff,{map:paper}),-.125,-.125,.323);
   for(const x of [-.275,.275])for(const y of [-.23,.23])mesh(parent,new T.SphereGeometry(.012,6,4),p.edge,x,y,.328);
  }
- v.playerView.replace(createImprovedAvatar());v.carryAnchor.position.set(0,.89,.44);
+ v.playerView.replace(createCandidateAvatar());v.carryAnchor.position.set(0,.89,.44);
  // The foreground awning is visual-only: fade it in close shots rather than hiding the protagonist.
  const canopy=world.children.filter(n=>n.isMesh&&n.position.z>3.6&&n.position.z<4.1&&n.position.y>3);
  for(const n of canopy)n.material=n.material.clone();
