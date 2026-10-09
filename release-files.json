@@ -25,8 +25,8 @@
     },
     {
       "path": "runtime.js",
-      "bytes": 26569,
-      "sha256": "4d56380e65f46b7bddb9cbe780712ab384ea7b3cc2022e45c0aaeab89ed7e81f"
+      "bytes": 27130,
+      "sha256": "e1d9eedca65463952052eb0c7cb0d864afdb397b6a56595960fce939ed37e0c2"
     },
     {
       "path": "audio.js",
@@ -145,8 +145,8 @@
     },
     {
       "path": "systems/movement.js",
-      "bytes": 1287,
-      "sha256": "fb32c358478ba71a2ca42aed867ea24e0d0b0b304e2f405755c4a9e6fac97f31"
+      "bytes": 3852,
+      "sha256": "da20ac3a1c8a67142cb40fb6ba9f118542b3ee9d470bada07bd057ccd57916ee"
     },
     {
       "path": "systems/quests.js",
