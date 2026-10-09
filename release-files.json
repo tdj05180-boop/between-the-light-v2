@@ -5,18 +5,18 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 8434,
-      "sha256": "174b5cae086e5f23e861f0ae048e9351c7675cf533e0c9b7fc5bf2e7c839aab0"
+      "bytes": 8450,
+      "sha256": "21f2bab1acb1a448bb26f0489b21aa47375618f2fb1eb9c98a7cb3744fc5233a"
     },
     {
       "path": "style.css",
-      "bytes": 14607,
-      "sha256": "899d68e91a6c234e52d00c1f1d60dd734ff324fbc5efa6cb39431a5e2de793d3"
+      "bytes": 14678,
+      "sha256": "7cf7164528b13acceabedf13026ce914facfa7c17f3881a6c83007bddc1e0e14"
     },
     {
       "path": "mobile-controls.css",
-      "bytes": 5211,
-      "sha256": "1e3d5281a25a2a49911c9f820dc1ac40708c3b680b7c5537ecce0404bb3d0f81"
+      "bytes": 6206,
+      "sha256": "fba5a9bd136cb53ba77766f432374db3c91c2978eacda92339b9a851a53876f1"
     },
     {
       "path": "game.js",
@@ -25,8 +25,8 @@
     },
     {
       "path": "runtime.js",
-      "bytes": 25217,
-      "sha256": "03dea7f9f1f5a3863f525e845b7fa408eb44486ed15386b97da82cdeefcfac4e"
+      "bytes": 26569,
+      "sha256": "4d56380e65f46b7bddb9cbe780712ab384ea7b3cc2022e45c0aaeab89ed7e81f"
     },
     {
       "path": "audio.js",
@@ -117,6 +117,11 @@
       "path": "vendor/THREE-LICENSE.txt",
       "bytes": 1081,
       "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
+    },
+    {
+      "path": "systems/browser-compat.js",
+      "bytes": 3975,
+      "sha256": "2d99015c3381c24c95f42fe302063b44bb6bd7e53aae084e248e439c2971fc0b"
     },
     {
       "path": "systems/camera.js",

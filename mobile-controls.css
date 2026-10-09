@@ -5,10 +5,11 @@
 /* Shared mobile input layout. Native safe-area values may be simulated by the test harness. */
 .pc-action{display:flex;align-items:center;gap:10px}.mobile-action{display:none}
 body[data-mobile="true"]{
+ --safe-top:env(safe-area-inset-top,0px);--game-vh:calc(var(--game-height,100dvh)/100);
  --safe-left:env(safe-area-inset-left,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
- --thumb-inset:clamp(24px,5.5vw,64px);--thumb-bottom:clamp(18px,5vh,38px);
- --stick-size:clamp(96px,25vh,124px);--button-size:clamp(52px,14vh,68px);
- --action-size:clamp(62px,17vh,82px);--button-gap:clamp(10px,2vw,18px);
+ --thumb-inset:clamp(24px,5.5vw,64px);--thumb-bottom:clamp(18px,calc(var(--game-vh)*5),38px);
+ --stick-size:clamp(96px,calc(var(--game-vh)*25),124px);--button-size:clamp(52px,calc(var(--game-vh)*14),68px);
+ --action-size:clamp(62px,calc(var(--game-vh)*17),82px);--button-gap:clamp(10px,2vw,18px);
  --action-width:calc(var(--button-size)*2 + var(--button-gap));
  --side-zone:calc(var(--action-width) + var(--thumb-inset) + 10px);
 }
@@ -18,7 +19,7 @@ body[data-mobile="true"] .joystick{width:var(--stick-size);height:var(--stick-si
 body[data-mobile="true"] .joystick span{width:42%;height:42%;left:29%;top:29%;background:#577c6ccc}
 body[data-mobile="true"] .joystick[aria-disabled="true"]{opacity:.35}
 body[data-mobile="true"] .action-controls{position:absolute;right:calc(var(--safe-right) + var(--thumb-inset));bottom:calc(var(--safe-bottom) + var(--thumb-bottom));width:var(--action-width);height:calc(var(--action-size) + var(--button-size) + var(--button-gap));pointer-events:none}
-body[data-mobile="true"] .action-controls button{position:absolute;margin:0;padding:0;min-width:0;min-height:0;display:grid;place-items:center;border-radius:50%;border:1px solid #fff9;background:#f3f1e7d9;color:#315548;box-shadow:0 4px 14px #2549381c,inset 0 0 0 3px #ffffff30;font-size:clamp(12px,3.3vh,15px);font-weight:650;touch-action:none;user-select:none;-webkit-user-select:none;pointer-events:auto;transition:background .1s,opacity .1s}
+body[data-mobile="true"] .action-controls button{position:absolute;margin:0;padding:0;min-width:0;min-height:0;display:grid;place-items:center;border-radius:50%;border:1px solid #fff9;background:#f3f1e7d9;color:#315548;box-shadow:0 4px 14px #2549381c,inset 0 0 0 3px #ffffff30;font-size:clamp(12px,calc(var(--game-vh)*3.3),15px);font-weight:650;touch-action:none;user-select:none;-webkit-user-select:none;pointer-events:auto;transition:background .1s,opacity .1s}
 body[data-mobile="true"] #interactBtn{width:var(--action-size);height:var(--action-size);top:0;bottom:auto;right:calc((var(--action-width) - var(--action-size))/2);background:#527869ed;color:#fff9e9}
 body[data-mobile="true"] #jumpBtn{width:var(--button-size);height:var(--button-size);left:0;right:auto;bottom:0}
 body[data-mobile="true"] #runBtn{width:var(--button-size);height:var(--button-size);right:0;bottom:0}
@@ -26,15 +27,21 @@ body[data-mobile="true"] .action-controls button:disabled{opacity:.42;box-shadow
 body[data-mobile="true"] #runBtn[data-held="true"],body[data-mobile="true"] #jumpBtn:active{background:#527869;color:#fff9e9}
 body[data-mobile="true"] .pc-action{display:none}body[data-mobile="true"] .mobile-action{display:inline}
 body[data-mobile="true"] .hint{display:block;left:calc(50% + (var(--safe-left) - var(--safe-right))/2);transform:translateX(-50%);bottom:calc(var(--safe-bottom) + 14px);max-width:calc(100% - var(--side-zone)*2 - var(--safe-left) - var(--safe-right));white-space:normal;padding:7px 10px;font-size:10px;line-height:1.5}
-body[data-mobile="true"] .dialogue{left:calc(var(--safe-left) + var(--side-zone));right:calc(var(--safe-right) + var(--side-zone));bottom:calc(var(--safe-bottom) + 14px);transform:none;width:auto;max-width:none;padding:12px 14px;max-height:calc(100dvh - 80px);overflow:auto}
-body[data-mobile="true"] .dialogue p{min-height:0;font-size:clamp(12px,3.5vh,15px);line-height:1.65;margin:8px 0;word-break:normal;overflow-wrap:anywhere}
+body[data-mobile="true"] .dialogue{left:calc(var(--safe-left) + var(--side-zone));right:calc(var(--safe-right) + var(--side-zone));bottom:calc(var(--safe-bottom) + 14px);transform:none;width:auto;max-width:none;padding:12px 14px;max-height:calc(var(--game-height,100dvh) - var(--safe-top) - var(--safe-bottom) - 80px);overflow:auto}
+body[data-mobile="true"] .dialogue p{min-height:0;font-size:clamp(12px,calc(var(--game-vh)*3.5),15px);line-height:1.65;margin:8px 0;word-break:normal;overflow-wrap:anywhere}
 body[data-mobile="true"] .dialog-remaining{font-size:9px}
 body[data-mobile="true"][data-dialogue="true"] .quest,body[data-mobile="true"][data-dialogue="true"] .camera-tools{visibility:hidden}
-body[data-mobile="true"] .timer-panel{left:calc(var(--safe-left) + 12px)}
-body[data-mobile="true"] .topbar{left:calc(var(--safe-left) + 22px);right:calc(var(--safe-right) + 22px)}
-body[data-mobile="true"] .quest{left:calc(var(--safe-left) + 22px)}
-body[data-mobile="true"] .camera-tools{right:calc(var(--safe-right) + 22px)}
+body[data-mobile="true"] .timer-panel{top:calc(var(--safe-top) + 10px);left:calc(var(--safe-left) + 12px)}
+body[data-mobile="true"] .topbar{top:calc(var(--safe-top) + 62px);left:calc(var(--safe-left) + 22px);right:calc(var(--safe-right) + 22px)}
+body[data-mobile="true"] .quest{top:calc(var(--safe-top) + 145px);left:calc(var(--safe-left) + 22px)}
+body[data-mobile="true"] .camera-tools{top:calc(var(--safe-top) + 145px);right:calc(var(--safe-right) + 22px)}
 @media(orientation:portrait){
  body[data-mobile="true"] .dialogue{left:calc(var(--safe-left) + 18px);right:calc(var(--safe-right) + 18px);bottom:calc(var(--safe-bottom) + var(--thumb-bottom) + var(--action-size) + var(--button-size) + var(--button-gap) + 12px);max-height:45dvh}
  body[data-mobile="true"] .hint{display:none}
 }
+
+/* Guard only custom game gestures. Story/help overlays keep native scrolling and zoom. */
+#world,#touchControls,#actionControls{touch-action:none;-webkit-touch-callout:none}
+@media(max-width:560px){body[data-mobile="true"] .timer-panel{top:calc(var(--safe-top) + 9px)}body[data-mobile="true"] .topbar{top:calc(var(--safe-top) + 60px)}}
+@media(max-width:560px){body[data-mobile="true"] .quest,body[data-mobile="true"] .camera-tools{top:calc(var(--safe-top) + 105px)}}
+@media(max-height:500px){body[data-mobile="true"] .quest,body[data-mobile="true"] .camera-tools{top:calc(var(--safe-top) + 108px)}}
