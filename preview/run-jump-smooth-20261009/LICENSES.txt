@@ -1,0 +1,1 @@
+This release includes only the project procedural improved game and Three.js r180 (MIT). See vendor/THREE-LICENSE.txt. No Quaternius, Kenney, or Synty model/texture files are included. Original base generator modules are runtime dependencies of the improved scene, not selectable comparison scenes.

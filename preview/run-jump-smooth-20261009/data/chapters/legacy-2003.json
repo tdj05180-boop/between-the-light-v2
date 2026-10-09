@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-2003",
+  "title": "첫 번째 작은 세계",
+  "sceneId": "legacy-room",
+  "spawn": {
+    "x": 0.25,
+    "z": 3.05
+  },
+  "opening": "opening",
+  "ending": "ending",
+  "interactions": [
+    {
+      "id": "memory",
+      "kind": "object",
+      "x": -3.45,
+      "z": -2.3,
+      "y": 1.7,
+      "radius": 1.8,
+      "label": "기록 살펴보기"
+    },
+    {
+      "id": "crate0",
+      "kind": "object",
+      "action": "pick",
+      "boxId": 0,
+      "x": -2.4,
+      "z": 1.6,
+      "y": 1.04,
+      "radius": 1.15,
+      "label": "○ 상자 들기"
+    },
+    {
+      "id": "slot0",
+      "kind": "object",
+      "action": "place",
+      "boxId": 0,
+      "x": -0.9,
+      "z": -3.05,
+      "y": 1.9,
+      "radius": 1.7,
+      "label": "○ 상자 내려놓기"
+    },
+    {
+      "id": "crate1",
+      "kind": "object",
+      "action": "pick",
+      "boxId": 1,
+      "x": 0.5,
+      "z": 0.3,
+      "y": 1.04,
+      "radius": 1.15,
+      "label": "△ 상자 들기"
+    },
+    {
+      "id": "slot1",
+      "kind": "object",
+      "action": "place",
+      "boxId": 1,
+      "x": 0.6,
+      "z": -3.05,
+      "y": 1.9,
+      "radius": 1.7,
+      "label": "△ 상자 내려놓기"
+    },
+    {
+      "id": "crate2",
+      "kind": "object",
+      "action": "pick",
+      "boxId": 2,
+      "x": 3.3,
+      "z": 1.6,
+      "y": 1.04,
+      "radius": 1.15,
+      "label": "□ 상자 들기"
+    },
+    {
+      "id": "slot2",
+      "kind": "object",
+      "action": "place",
+      "boxId": 2,
+      "x": 2.1,
+      "z": -3.05,
+      "y": 1.9,
+      "radius": 1.7,
+      "label": "□ 상자 내려놓기"
+    },
+    {
+      "id": "light",
+      "kind": "object",
+      "x": 4.6,
+      "z": -2.9,
+      "y": 2.26,
+      "radius": 1.6,
+      "label": "등불 살펴보기"
+    },
+    {
+      "id": "exit",
+      "kind": "object",
+      "x": 0,
+      "z": 6.7,
+      "y": 1.2,
+      "radius": 1.2,
+      "label": "다음 길로 나아가기"
+    }
+  ],
+  "quests": [
+    {
+      "id": "memory",
+      "type": "interact",
+      "title": "책상에 놓인 기록",
+      "description": "왼쪽 책상 가까이 다가가, 2003년의 기록을 살펴보세요.",
+      "targets": [
+        "memory"
+      ],
+      "goal": {
+        "event": "interact",
+        "count": 1
+      },
+      "before": "memory"
+    },
+    {
+      "id": "boxes",
+      "type": "boxes",
+      "title": "남은 것들을 제자리에 {count}/3",
+      "description": "상자를 들어 같은 모양의 뒤쪽 선반으로 옮겨보세요.",
+      "targets": [
+        "crate0",
+        "crate1",
+        "crate2",
+        "slot0",
+        "slot1",
+        "slot2"
+      ],
+      "goal": {
+        "event": "box:placed",
+        "count": 3
+      },
+      "after": "boxes"
+    },
+    {
+      "id": "light",
+      "type": "light",
+      "title": "작은 불씨를 모아서",
+      "description": "오른쪽 등불에 다가가 빛을 모아보세요.",
+      "targets": [
+        "light"
+      ],
+      "goal": {
+        "event": "spark",
+        "count": 3
+      },
+      "after": "lighting"
+    },
+    {
+      "id": "exit",
+      "type": "exit",
+      "title": "다음 한 걸음",
+      "description": "앞쪽 돌길 끝의 빛을 향해 걸어가세요.",
+      "targets": [
+        "exit"
+      ],
+      "goal": {
+        "event": "arrive",
+        "count": 1
+      }
+    }
+  ],
+  "sequences": {
+    "opening": {
+      "speaker": "첫 번째 장 · 쉽지 않았던 날들",
+      "lockMovement": true,
+      "lines": [
+        {
+          "text": "2003년.\n한 사람의 이야기를 따라, 작은 공간으로 들어갑니다.",
+          "durationMs": 4000
+        }
+      ]
+    },
+    "memory": {
+      "speaker": "2003 · 확인된 이야기",
+      "lockMovement": true,
+      "camera": {
+        "preset": "close",
+        "target": {
+          "x": -3.4,
+          "y": 1.05,
+          "z": -2.2
+        }
+      },
+      "lines": [
+        {
+          "text": "2003년, 결혼 후 사업이 잘되지 않아\n힘든 시기를 보냈습니다.",
+          "durationMs": 4500
+        },
+        {
+          "text": "이 작은 공간은 그 시기를 표현한 무대입니다.\n남은 상자들을 하나씩 제자리에 놓아보세요.",
+          "durationMs": 5000
+        }
+      ]
+    },
+    "boxes": {
+      "speaker": "다음 한 걸음",
+      "lockMovement": true,
+      "lines": [
+        {
+          "text": "남아 있는 것들을 정리했습니다.\n오른쪽의 작은 등불을 살펴보세요.",
+          "durationMs": 4000
+        }
+      ]
+    },
+    "lighting": {
+      "speaker": "이어지는 길",
+      "lockMovement": true,
+      "cinematic": true,
+      "camera": {
+        "preset": "close",
+        "target": {
+          "x": 2.9,
+          "y": 1.1,
+          "z": -2
+        }
+      },
+      "lines": [
+        {
+          "text": "",
+          "durationMs": 650
+        },
+        {
+          "text": "",
+          "durationMs": 1650,
+          "effect": "warmth"
+        },
+        {
+          "text": "어려운 시기를 지나던 한 사람.\n그의 이야기는 여기서 끝나지 않습니다.",
+          "durationMs": 4500
+        },
+        {
+          "text": "앞쪽의 돌길을 따라,\n다음 한 걸음을 내디뎌 보세요.",
+          "durationMs": 4000
+        }
+      ]
+    },
+    "ending": {
+      "speaker": "",
+      "lockMovement": true,
+      "cinematic": true,
+      "camera": {
+        "preset": "wide",
+        "target": {
+          "x": 0,
+          "y": 0.4,
+          "z": 1.1
+        }
+      },
+      "lines": [
+        {
+          "text": "",
+          "durationMs": 1700
+        }
+      ]
+    }
+  }
+}

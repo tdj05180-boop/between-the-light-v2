@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "mode": "presentation",
+  "chapters": [
+    "./chapters/legacy-2003.json"
+  ]
+}
