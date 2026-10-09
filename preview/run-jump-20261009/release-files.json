@@ -1,0 +1,172 @@
+{
+  "profile": "procedural-improved-only",
+  "externalAssets": false,
+  "comparisonScenes": false,
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 8450,
+      "sha256": "21f2bab1acb1a448bb26f0489b21aa47375618f2fb1eb9c98a7cb3744fc5233a"
+    },
+    {
+      "path": "style.css",
+      "bytes": 14678,
+      "sha256": "7cf7164528b13acceabedf13026ce914facfa7c17f3881a6c83007bddc1e0e14"
+    },
+    {
+      "path": "mobile-controls.css",
+      "bytes": 6206,
+      "sha256": "fba5a9bd136cb53ba77766f432374db3c91c2978eacda92339b9a851a53876f1"
+    },
+    {
+      "path": "game.js",
+      "bytes": 24,
+      "sha256": "7e3df92a732402f4569a9a8bf847dca47bfa3f089d3e6efcfbc4a4560e85a161"
+    },
+    {
+      "path": "runtime.js",
+      "bytes": 27220,
+      "sha256": "171335e07bc0cb443bff44c44a05964326eb477f2a6f91dbc5b346334c801b2c"
+    },
+    {
+      "path": "audio.js",
+      "bytes": 1730,
+      "sha256": "1712a3109dd4d0415a581a2fb3cb38358ead2c08c01d7dd07b2548fcffaee16f"
+    },
+    {
+      "path": "flow.js",
+      "bytes": 1981,
+      "sha256": "5682fbe588bb48ee54f07bea71e1681140f6fbb03b48bd228ee40abd99bee7dc"
+    },
+    {
+      "path": "data/campaign.json",
+      "bytes": 106,
+      "sha256": "bfa315f15e13fdb150c12a887e3aabf38cc3af45c8669b5e7abc1b1ecbaa75fb"
+    },
+    {
+      "path": "data/chapters/legacy-2003.json",
+      "bytes": 5697,
+      "sha256": "90f878f805d4d3c2110c430c47de6fe2dadbf548b2e9836065f5d02c2fc089aa"
+    },
+    {
+      "path": "models/legacy-world.js",
+      "bytes": 15118,
+      "sha256": "aee88554185102829c00b7d08f3c47e37ab49b8c3cbbf61fdf474e0def08bae8"
+    },
+    {
+      "path": "models/legacy-avatar.js",
+      "bytes": 2314,
+      "sha256": "8c92fcf491ac8f111d54f83fad9c8dea24e238b6073d6ff08d8c8d5d7624ec2b"
+    },
+    {
+      "path": "models/improved-world.js",
+      "bytes": 7836,
+      "sha256": "1e86730bcca55356df643847eee07eb8cda8f4dd7c5d0a51a1461e7648bab58c"
+    },
+    {
+      "path": "models/candidate-avatar.js",
+      "bytes": 1491,
+      "sha256": "d1adba2539f236fef3fac4d0781aa18eaa1b68dade5d04c398e5520ad42f5ada"
+    },
+    {
+      "path": "models/pelvis-refined-avatar.js",
+      "bytes": 6489,
+      "sha256": "0cf83d32b79db1c4d180bb4772ecdec4563369a1b0589815d954bd572908bef7"
+    },
+    {
+      "path": "models/tailored-avatar.js",
+      "bytes": 13842,
+      "sha256": "9388917971ff6ddea9d72418be0e723d594a482a55deea9df83fef63eed49b4c"
+    },
+    {
+      "path": "models/tailored-mesh.js",
+      "bytes": 3922,
+      "sha256": "dcd5db9492933da3f1c285db3da766231a656c6642e85c5b3ec1c2e844f7f269"
+    },
+    {
+      "path": "models/pastel-shapes.js",
+      "bytes": 1290,
+      "sha256": "56e493d6b8aeb6f76b5831ae5d3552404babd12ff0081f43b4b328e92f86c6c0"
+    },
+    {
+      "path": "models/static-batch.js",
+      "bytes": 2653,
+      "sha256": "1b2a5e8a845359ea994caaefae0becc67feb5fe80c462cbd55359bef54d8c3a3"
+    },
+    {
+      "path": "models/resources.js",
+      "bytes": 789,
+      "sha256": "ed3a19ab9f83314e229ea6c1420e8d73a46730aaa6602eb8c4e6b72316da8d6f"
+    },
+    {
+      "path": "vendor/three.module.min.js",
+      "bytes": 338908,
+      "sha256": "e2b5ee6bccd38fd6d8a2428546b83c5f2426d84b152ef82be8055556e3b40eb6"
+    },
+    {
+      "path": "vendor/three.core.min.js",
+      "bytes": 381124,
+      "sha256": "61ba0df005b05991361d040d8ff670e1aadfd0ce7aeebd1fdb0725957a8957de"
+    },
+    {
+      "path": "vendor/BufferGeometryUtils.js",
+      "bytes": 35555,
+      "sha256": "018b6ec0dcbbaea7d68b02d8d1162ab37783b9dbd4cc85fdbc35506690a993ea"
+    },
+    {
+      "path": "vendor/THREE-LICENSE.txt",
+      "bytes": 1081,
+      "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
+    },
+    {
+      "path": "systems/browser-compat.js",
+      "bytes": 3975,
+      "sha256": "2d99015c3381c24c95f42fe302063b44bb6bd7e53aae084e248e439c2971fc0b"
+    },
+    {
+      "path": "systems/camera.js",
+      "bytes": 904,
+      "sha256": "33490e1fc1589e433862c1c88eeffec8cc21778a52972347c3a2200949d6814f"
+    },
+    {
+      "path": "systems/interactions.js",
+      "bytes": 599,
+      "sha256": "ac5dae82ab47c533e1a91094fe2ac47888927e36af5eefdd29eb0fe5b37aae0b"
+    },
+    {
+      "path": "systems/jump.js",
+      "bytes": 566,
+      "sha256": "a745908e19c8f36f45ff748258a269d8bcc8b8cb2f6c545895b1b0c3eccee38c"
+    },
+    {
+      "path": "systems/model-slot.js",
+      "bytes": 457,
+      "sha256": "999318237fdb16f7d8cdf91445a1b8a34d394e4fa19e9ccb76c7d36001d0cc30"
+    },
+    {
+      "path": "systems/movement.js",
+      "bytes": 3163,
+      "sha256": "253b3c7e2b01fdf11ebe7952408e295e41ee5020bc22d5bb3a8cb66a222e90b8"
+    },
+    {
+      "path": "systems/quests.js",
+      "bytes": 3571,
+      "sha256": "8879d340006db57b8f1596745f6e6cdc09ee53ee3eb391b4d2fab707a6a3ca86"
+    },
+    {
+      "path": "systems/time.js",
+      "bytes": 2750,
+      "sha256": "d15cc16aa622af2343c7ced6c3e9552ba1e8e2f4b859bd0371eb9c8a308eb433"
+    },
+    {
+      "path": "LICENSES.txt",
+      "bytes": 299,
+      "sha256": "8c6e4d7899608210b8311ef0eddca7bbcc85721f657ae91789131143ab1a68e6"
+    },
+    {
+      "path": ".nojekyll",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
